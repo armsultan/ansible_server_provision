@@ -10,7 +10,7 @@ Based off the article [How to manage your workstation configuration with Ansible
 ### Centos
 ```bash 
 yum -y install python3-pip
-pip3 install ansible
+pip3 install ansible --user
 yum -y install git
 ```
 
