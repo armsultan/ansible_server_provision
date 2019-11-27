@@ -2,7 +2,7 @@
   become: true
   pre_tasks:
     - name: update repositories
-      yum: update_cache=yes
+      apt: update_cache=yes
       changed_when: False
   tasks:
     - name: check that i have log file for all hosts on my local machine
