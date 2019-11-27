@@ -1,10 +1,4 @@
 - name: Install packages
-  apt: name={{item}}
-  with_items:
-    - htop
-    - tmux
-    - wget
-    - curl
-    - vim
-    - git
-    - ca-certificates
+  vars:
+    sys_packages: [ 'htop', 'tmux', 'wget', 'curl', 'vim', 'git', 'apt-transport-https', 'ca-certificates']
+  apt: name={{ sys_packages }} state=latest
