@@ -38,5 +38,5 @@ apt-add-repository ppa:ansible/ansible
 apt update
 apt -y install ansible git
 # manually run ansible-pull for the first time
-/usr/local/bin/ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+/usr/bin/ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
