@@ -1,0 +1,5 @@
+- name: Set soft and hard limit for all users in limits.conf
+  copy: src=files/limits.conf dest=/etc/security/limits.conf owner=root group=root mode=0440
+
+- name: Tweak system configuration for maximum concurrency in sysctl.conf
+  copy: src=files/sysctl.conf dest=/etc/sysctl.conf owner=root group=root mode=0440

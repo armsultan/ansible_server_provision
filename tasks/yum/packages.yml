@@ -1,0 +1,10 @@
+- name: Install packages
+  yum: name={{item}}
+  with_items:
+      - htop
+      - tmux
+      - wget
+      - curl
+      - vim
+      - git
+      - ca-certificates

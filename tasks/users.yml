@@ -1,0 +1,23 @@
+- name: Add the user 'ansible'
+  user:
+    name: ansible
+    uid: 900
+    comment: ansible user
+
+- name: copy sudoers_ansible
+  copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
+
+- name: Add the user 'armand' with a primary group of 'admin'
+  user:
+    name: armand
+    comment: user in admin group
+    group: admin
+
+- name: Set authorized key for 'armand' taken from file
+  authorized_key:
+    user: armand
+    state: present
+    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+
+- name: copy sudoers_armand
+  copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
