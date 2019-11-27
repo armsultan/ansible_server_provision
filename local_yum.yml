@@ -10,7 +10,7 @@
       delegate_to: localhost
 
   tasks:
-    - include: tasks/group.yml
+    - include: tasks/groups.yml
     - include: tasks/users.yml
     - include: tasks/optimize.yml
     - include: tasks/yum/cron.yml

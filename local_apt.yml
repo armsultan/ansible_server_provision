@@ -6,7 +6,7 @@
       changed_when: False
 
   tasks:
-    - include: tasks/group.yml
+    - include: tasks/groups.yml
     - include: tasks/users.yml
     - include: tasks/optimize.yml
     - include: tasks/apt/cron.yml
