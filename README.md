@@ -5,17 +5,17 @@ Based off the article [How to manage your workstation configuration with Ansible
 
 ## Prerequsites
 
-1. `git` and `ansible` are both installed on the system first. 
+1. `git` and `ansible` are both installed on the system first
 2. Then you can manually run `ansible-pull` for the first time (after first run, cron job will automate this)
 
 ### Centos
-```bash 
+```bash
 # Install ansible and git
-yum -y install python3-pip
-pip3 install ansible --user
-yum -y install git
+yum -y install epel-release
+yum -y update
+yum -y install ansible git
 # manually run ansible-pull for the first time
-/usr/local/bin/ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
+ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
 ### RHEL
@@ -28,15 +28,15 @@ subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
 yum -y install ansible git
 ansible --version
 # manually run ansible-pull for the first time
-/usr/local/bin/ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
+ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
 ### Debian/Ubuntu
-```bash 
+```bash
 # Install ansible and git
 apt-add-repository ppa:ansible/ansible
 apt update
 apt -y install ansible git
 # manually run ansible-pull for the first time
-/usr/bin/ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
