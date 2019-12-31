@@ -1,4 +1,4 @@
-- hosts: yum_servers, deb_servers
+- hosts: localhost
   become: true
   tasks:
     - name: update MOTD for RHEL/Centos systems
