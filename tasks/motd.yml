@@ -2,26 +2,26 @@
   copy: src=files/custom_motd.sh dest=/etc/profile.d owner=root group=root mode='755'
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Blank out default static motd
+- name: Blank out default static motd for RHEL/Centos systems
   shell: |
     echo '' > /etc/motd
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Disable motd
+- name: Disable motd for RHEL/Centos systems
   shell: |
     echo 'PrintMotd no' >>  /etc/ssh/sshd_config
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Restart service sshd, in all cases
+- name: Restart service sshd, in all cases, for RHEL/Centos systems
   service:
     name: sshd
     state: restarted
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: disable default MOTD for Ubuntu and Debian systems
+- name: Disable default MOTD for Ubuntu and Debian systems
   file: dest=/etc/update-motd.d mode=-x state=directory recurse=yes
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
-- name: update MOTD for Ubuntu and Debian systems
+- name: Update MOTD for Ubuntu and Debian systems
   copy: src=files/custom_motd.sh dest=/etc/update-motd.d/01-custom owner=root group=root mode='755'
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
