@@ -1,0 +1,16 @@
+
+- name: Remove bootloader delay
+  replace:
+    path: /etc/default/grub
+    regexp: 'GRUB_TIMEOUT=.*'
+    replace: 'GRUB_TIMEOUT=2'
+
+- name: update-grub2 for Debian/Ubuntu
+  shell: |
+    update-grub2
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
+- name: re-generate the /boot/grub2/grub.cfg file for RHEL/CentOS
+  shell: |
+    grub2-mkconfig –o /boot/grub2/grub.cfg
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

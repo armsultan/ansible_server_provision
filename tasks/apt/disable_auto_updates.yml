@@ -1,0 +1,6 @@
+- name: Disable Automatic Updates from Command Line
+  replace:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: 'APT::Periodic::Update-Package-Lists "1"'
+    replace: '"APT::Periodic::Update-Package-Lists "0"'
+  when: ansible_distribution == 'Ubuntu'
