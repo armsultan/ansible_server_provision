@@ -9,8 +9,8 @@
     - include: tasks/groups.yml
     - include: tasks/motd.yml
     - include: tasks/users.yml
-    - include: tasks/disable_auto_updates.yml
-    - include: tasks/apt/boot_optimization.yml
+    - include: tasks/apt/disable_auto_updates.yml
+    - include: tasks/boot_optimization.yml
     - include: tasks/optimize.yml
     - include: tasks/apt/cron.yml
     - include: tasks/apt/packages.yml
