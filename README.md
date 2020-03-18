@@ -34,6 +34,7 @@ ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git loc
 ### Debian/Ubuntu
 ```bash
 # Install ansible and git
+apt-get install software-properties-common
 apt-add-repository ppa:ansible/ansible
 apt update
 apt -y install ansible git
