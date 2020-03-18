@@ -31,7 +31,7 @@ ansible --version
 ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
-### Debian/Ubuntu
+### Ubuntu
 ```bash
 # Install ansible and git
 apt-get install software-properties-common
