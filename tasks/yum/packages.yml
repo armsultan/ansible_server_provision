@@ -1,4 +1,4 @@
 - name: Install packages
   vars:
-    sys_packages: [ 'htop', 'tmux', 'wget', 'curl', 'vim', 'git', 'ca-certificates', 'jq']
+    sys_packages: [ 'htop', 'tmux', 'wget', 'curl', 'vim', 'git', 'ca-certificates', 'net-tools', 'jq']
   yum: name={{ sys_packages }} state=latest
