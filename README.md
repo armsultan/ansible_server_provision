@@ -41,3 +41,15 @@ apt -y install ansible git
 # manually run ansible-pull for the first time
 ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
+
+### Debian
+```bash
+# Install ansible and gi
+apt-get install software-properties-common
+echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+apt update
+apt -y install ansible git
+# manually run ansible-pull for the first time
+ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+```
