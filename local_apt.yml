@@ -3,7 +3,6 @@
   pre_tasks:
     - name: update repositories
       apt:
-        name: update
         update_cache: yes
       changed_when: false
   
