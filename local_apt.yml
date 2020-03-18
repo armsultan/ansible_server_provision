@@ -2,7 +2,8 @@
   become: true
   pre_tasks:
     - name: update repositories
-      apt: update_cache=yes
+      #upgrade: yes
+      update_cache: yes
       changed_when: False
 
   tasks:
