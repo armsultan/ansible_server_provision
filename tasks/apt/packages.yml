@@ -1,4 +1,4 @@
 - name: Install packages
   vars:
-    sys_packages: [ 'htop', 'tmux', 'wget', 'curl', 'vim', 'git', 'apt-transport-https', 'ca-certificates', 'unzip', 'dnsutils', 'jq']
+    sys_packages: [ 'htop', 'tmux', 'wget', 'curl', 'vim', 'git', 'apt-transport-https', 'ca-certificates', 'unzip', 'dnsutils', 'net-tools', 'jq']
   apt: name={{ sys_packages }} state=latest
