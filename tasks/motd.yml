@@ -19,7 +19,7 @@
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Disable default MOTD for Ubuntu and Debian systems
-  file: dest=/etc/update-motd.d mode=-x state=directory recurse=yes
+  file: dest=/etc/update-motd.d mode='644' state=directory recurse=yes
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
 - name: Update MOTD for Ubuntu and Debian systems
