@@ -14,3 +14,9 @@
     - include: tasks/optimize.yml
     - include: tasks/yum/cron.yml
     - include: tasks/yum/packages.yml
+
+  handlers:
+    - name: restart ssh
+      service:
+        name=sshd
+        state=restarted

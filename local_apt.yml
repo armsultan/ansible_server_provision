@@ -16,3 +16,9 @@
     - include: tasks/optimize.yml
     - include: tasks/apt/cron.yml
     - include: tasks/apt/packages.yml
+
+  handlers:
+    - name: restart ssh
+      service:
+        name=sshd
+        state=restarted
