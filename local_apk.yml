@@ -9,7 +9,7 @@
     - include: tasks/groups.yml
     - include: tasks/motd.yml
     - include: tasks/users.yml
-    - include: tasks/boot_optimization.yml
+    # - include: tasks/boot_optimization.yml
     - include: tasks/optimize.yml
     - include: tasks/apk/cron.yml
     - include: tasks/apk/packages.yml
