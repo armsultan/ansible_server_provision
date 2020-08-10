@@ -26,21 +26,21 @@
   copy: src=files/custom_motd.sh dest=/etc/update-motd.d/01-custom owner=root group=root mode='755'
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
-  - name: update MOTD for RHEL/Centos systems
+- name: update MOTD for Alpine systems
   copy: src=files/custom_motd.sh dest=/etc/periodic/15min/motd owner=root group=root mode='755'
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
-- name: Blank out default static motd for RHEL/Centos systems
+- name: Blank out default static motd for Alpine systems
   shell: |
     echo '' > /etc/motd
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
-- name: Disable motd for RHEL/Centos systems
+- name: Disable motd for Alpine systems
   shell: |
     echo 'PrintMotd no' >>  /etc/ssh/sshd_config
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
-- name: Restart service sshd, in all cases, for RHEL/Centos systems
+- name: Restart service sshd, in all cases, for Alpine systems
   service:
     name: sshd
     state: restarted
