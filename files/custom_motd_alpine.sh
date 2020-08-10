@@ -1,4 +1,5 @@
 #!/bin/sh
+#. /etc/os-release
 
 # UPTIME
 UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
@@ -28,7 +29,7 @@ cat > /etc/motd << EOF
 
 
  - CPU Load............: `cat /proc/loadavg | awk '{print $1 ", " $2 ", " $3}'`
- - Free Memory.........: `free -m | head -n 2 | tail -n 1 | awk {'print $4'}` MB / `free -t -m | grep "Mem" | awk '{print $2"MB";}'`
+ - Free Memory.........: `free -m | head -n 2 | tail -n 1 | awk {'print $4'}` MB / `free -m | grep "Mem" | awk '{print $2"MB";}'`
  - Free Swap...........: `free -m | tail -n 1 | awk {'print $4'}`M
  - Free Disk...........: `df -h / | awk '{ a = $2 } END { print a }'`
 
