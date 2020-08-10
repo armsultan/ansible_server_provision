@@ -1,10 +1,10 @@
 - hosts: localhost
   become: true
-  pre_tasks:
-    - name: update repositories
-      apk:
-        update_cache: yes
-          
+  # pre_tasks:
+  #   - name: update repositories
+  #     apk:
+  #       update_cache: yes
+
   tasks:
     - include: tasks/groups.yml
     - include: tasks/motd.yml
