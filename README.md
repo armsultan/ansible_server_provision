@@ -61,18 +61,18 @@ ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git loc
 # https://<mirror-server>/alpine/<version>/[main|community|testing]
 $ cat /etc/apk/repositories
 #/media/cdrom/apks
-http://dl-cdn.alpinelinux.org/alpine/v3.3/main
-http://dl-cdn.alpinelinux.org/alpine/v3.3/community
-http://dl-cdn.alpinelinux.org/alpine/edge/main
-http://dl-cdn.alpinelinux.org/alpine/edge/community
-http://dl-cdn.alpinelinux.org/alpine/edge/testing
+http://dl-cdn.alpinelinux.org/alpine/v3.12/main
+http://dl-cdn.alpinelinux.org/alpine/v3.12/community
+#http://dl-cdn.alpinelinux.org/alpine/edge/main
+#http://dl-cdn.alpinelinux.org/alpine/edge/community
+#http://dl-cdn.alpinelinux.org/alpine/edge/testing
 
 # Install extra packages, including git
 sudo apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass
 # Optional: update pip
 sudo pip install --upgrade pip
 # Install Anisble globally
-pip install ansible
+sudo pip install ansible
 # manually run ansible-pull for the first time
 ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apk.yml
 ```
