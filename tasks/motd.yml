@@ -26,7 +26,7 @@
   copy: src=files/custom_motd.sh dest=/etc/update-motd.d/01-custom owner=root group=root mode='755'
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
-- name: update MOTD for Alpine systems
+- name: update MOTD for Alpine systems (15 minutes out of date at worst)
   copy: src=files/custom_motd.sh dest=/etc/periodic/15min/motd owner=root group=root mode='755'
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
