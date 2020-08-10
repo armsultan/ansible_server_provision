@@ -37,7 +37,7 @@
 
 - name: Disable motd for Alpine systems
   shell: |
-    echo 'PrintMotd no' >>  /etc/ssh/sshd_config
+    echo 'PrintMotd yes' >>  /etc/ssh/sshd_config
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
 - name: Restart service sshd, in all cases, for Alpine systems
