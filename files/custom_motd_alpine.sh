@@ -33,5 +33,6 @@ cat > /etc/motd << EOF
  - Free Disk...........: `df -h / | awk '{ a = $2 } END { print a }'`
 
  - IP Addresses..........:
-`\n ifconfig | awk '/inet addr/{print substr($2,6)}'`
+ 
+`ifconfig | awk '/inet addr/{print substr($2,6)}'`
 EOF
