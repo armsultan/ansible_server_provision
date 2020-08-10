@@ -7,6 +7,12 @@
 - name: copy sudoers_ansible
   copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
 
+- name: Set authorized key for 'ansible' taken from file
+  authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+
 - name: Add the user 'armand' with a primary group of 'admin'
   user:
     name: armand
@@ -21,3 +27,27 @@
 
 - name: copy sudoers_armand
   copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
+
+# - name: Disable Password Authentication
+#   lineinfile:
+#         dest=/etc/ssh/sshd_config
+#         regexp='^PasswordAuthentication'
+#         line="PasswordAuthentication no"
+#         state=present
+#         backup=yes
+
+- name: Disable Root Login
+  lineinfile:
+        dest=/etc/ssh/sshd_config
+        regexp='^PermitRootLogin'
+        line="PermitRootLogin no"
+        state=present
+        backup=yes
+  notify:
+    - restart ssh
+
+handlers:
+- name: restart ssh
+  service:
+    name=sshd
+    state=restarted
