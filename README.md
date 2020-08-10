@@ -71,8 +71,8 @@ http://dl-cdn.alpinelinux.org/alpine/edge/testing
 sudo apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass
 # Optional: update pip
 sudo pip install --upgrade pip
-# Install Anisble
-sudo pip install git+git://github.com/ansible/ansible.git@devel
+# Install Anisble globally
+pip install ansible
 # manually run ansible-pull for the first time
 ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
