@@ -13,3 +13,9 @@
     - include: tasks/optimize.yml
     - include: tasks/apk/cron.yml
     - include: tasks/apk/packages.yml
+  
+    handlers:
+      - name: restart ssh
+        service:
+          name=sshd
+          state=restarted
