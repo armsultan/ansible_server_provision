@@ -18,7 +18,6 @@ cat > /etc/motd << EOF
 
  - Hostname............: `uname -n`
  - Uptime..............: $UPTIME_DAYS days, $UPTIME_HOURS hours, $UPTIME_MINUTES minutes
- - Users...............: Currently `users | wc -w` user(s) logged on: `users | sed -E -e 's/[[:blank:]]+/, /g'`
 
  - Primary IP Address..: `ifconfig eth0 | grep "inet addr" |  awk -F: '{print $2}' | awk '{print $1}'`
  - Distro..............: `lsb_release -ds 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 || uname -om`
