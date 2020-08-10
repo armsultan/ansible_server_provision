@@ -27,7 +27,7 @@
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
 - name: update MOTD for Alpine systems (15 minutes out of date at worst)
-  copy: src=files/custom_motd.sh dest=/etc/periodic/15min/motd owner=root group=root mode='755'
+  copy: src=files/custom_motd_alpine.sh dest=/etc/periodic/15min/motd owner=root group=root mode='755'
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
 - name: Blank out default static motd for Alpine systems
