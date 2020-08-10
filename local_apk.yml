@@ -4,8 +4,7 @@
     - name: update repositories
       apk:
         update_cache: yes
-      changed_when: false
-  
+          
   tasks:
     - include: tasks/groups.yml
     - include: tasks/motd.yml
