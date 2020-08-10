@@ -43,8 +43,10 @@
 
 - name: Restart and update crond on Alpine systems
   shell: |
-    rc-service crond start && rc-update add crond && chmod a+x /etc/periodic/15min/motd && run-parts --test /etc/periodic/15min
-
+    rc-service crond start \
+    && rc-update add crond \
+    && chmod a+x /etc/periodic/15min/motd \
+    && sh /etc/periodic/15min/motd
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
 
