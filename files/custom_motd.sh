@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # UPTIME
 UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
