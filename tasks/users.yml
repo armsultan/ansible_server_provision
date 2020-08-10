@@ -15,7 +15,14 @@
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
-- name: Add the user 'armand' with a primary group of 'admin'
+- name: Add the user 'armand' with a primary group of 'admin' in Alpine
+  user:
+    name: armand
+    comment: user in admin group
+    group: admin
+    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+
+- name: Add the user 'armand' with a primary group of 'admin' in Other distros
   user:
     name: armand
     comment: user in admin group
@@ -31,27 +38,3 @@
 - name: copy sudoers_armand
   copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
-- name: Make sure we have a 'wheel' group
-  group:
-    name: wheel
-    state: present
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
-
-- name: Allow 'wheel' group to have passwordless sudo
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^%wheel'
-    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-    validate: 'visudo -cf %s'
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
-
-- name: Add sudoers users to wheel group
-  user:
-    name=ansible
-    groups=wheel
-    append=yes
-    state=present
-    createhome=yes
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
