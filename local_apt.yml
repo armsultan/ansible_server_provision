@@ -10,6 +10,7 @@
     - include: tasks/groups.yml
     - include: tasks/motd.yml
     - include: tasks/users.yml
+    - include: tasks/ssh_access.yml
     - include: tasks/apt/disable_auto_updates.yml
     - include: tasks/boot_optimization.yml
     - include: tasks/optimize.yml
