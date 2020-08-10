@@ -35,13 +35,16 @@
     echo '' > /etc/motd
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
-- name: Disable motd for Alpine systems
-  shell: |
-    echo 'PrintMotd yes' >>  /etc/ssh/sshd_config
-  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
-
 - name: Restart service sshd, in all cases, for Alpine systems
   service:
     name: sshd
     state: restarted
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+
+- name: Restart and update crond on Alpine systems
+  shell: |
+    rc-service crond start && rc-update add crond && chmod a+x /etc/periodic/15min/motd && run-parts --test /etc/periodic/15min
+
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+
+

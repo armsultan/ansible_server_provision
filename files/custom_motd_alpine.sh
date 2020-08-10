@@ -5,7 +5,7 @@ UPTIME_DAYS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 / 86400)
 UPTIME_HOURS=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 % 86400 / 3600)
 UPTIME_MINUTES=$(expr `cat /proc/uptime | cut -d '.' -f1` % 31556926 % 86400 % 3600 / 60)
 
-echo -e "
+cat > /etc/motd << EOF
 ██╗  ██╗██╗ █████╗      ██████╗ ██████╗  █████╗
 ██║ ██╔╝██║██╔══██╗    ██╔═══██╗██╔══██╗██╔══██╗
 █████╔╝ ██║███████║    ██║   ██║██████╔╝███████║
@@ -35,4 +35,4 @@ echo -e "
 
  - IP Addresses..........:\n
    `ifconfig | awk '/inet addr/{print substr($2,6)}'`
-"
+EOF
