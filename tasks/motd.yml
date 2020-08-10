@@ -7,11 +7,6 @@
     echo '' > /etc/motd
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Disable motd for RHEL/Centos systems
-  shell: |
-    echo 'PrintMotd no' >>  /etc/ssh/sshd_config
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
 - name: Restart service sshd, in all cases, for RHEL/Centos systems
   service:
     name: sshd
