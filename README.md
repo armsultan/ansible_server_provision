@@ -44,12 +44,35 @@ ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git loc
 
 ### Debian
 ```bash
-# Install ansible and gi
+# Install ansible and git
 apt-get install software-properties-common
 echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 apt update
 apt -y install ansible git
+# manually run ansible-pull for the first time
+ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+```
+
+### Alpine
+```bash
+# Repositories can be enabled using the following format
+# See Mirrors: https://mirrors.alpinelinux.org
+# https://<mirror-server>/alpine/<version>/[main|community|testing]
+$ cat /etc/apk/repositories
+#/media/cdrom/apks
+http://dl-cdn.alpinelinux.org/alpine/v3.3/main
+http://dl-cdn.alpinelinux.org/alpine/v3.3/community
+http://dl-cdn.alpinelinux.org/alpine/edge/main
+http://dl-cdn.alpinelinux.org/alpine/edge/community
+http://dl-cdn.alpinelinux.org/alpine/edge/testing
+
+# Install extra packages, including git
+sudo apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass
+# Optional: update pip
+sudo pip install --upgrade pip
+# Install Anisble
+sudo pip install git+git://github.com/ansible/ansible.git@devel
 # manually run ansible-pull for the first time
 ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
