@@ -32,6 +32,6 @@ cat > /etc/motd << EOF
  - Free Swap...........: `free -m | tail -n 1 | awk {'print $4'}`M
  - Free Disk...........: `df -h / | awk '{ a = $2 } END { print a }'`
 
- - IP Addresses..........:\n
-   `ifconfig | awk '/inet addr/{print substr($2,6)}'`
+ - IP Addresses..........:
+`ifconfig | awk '/inet addr/{print substr($2,6)}'`
 EOF
