@@ -74,5 +74,5 @@ sudo pip install --upgrade pip
 # Install Anisble globally
 pip install ansible
 # manually run ansible-pull for the first time
-ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apk.yml
 ```
