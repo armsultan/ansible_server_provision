@@ -2,7 +2,6 @@
   group:
     name: admin
     state: present
-  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: copy sudoers admin group for other distros
   copy: src=files/sudoers_admin dest=/etc/sudoers.d/admin owner=root group=root mode=0440
@@ -10,7 +9,7 @@
 
 - name: Allow 'admin' group to have passwordless sudo for alpine
   lineinfile:
-    dest: /etc/sudoers
+    path: /etc/sudoers
     state: present
     regexp: '^%admin'
     line: '%admin ALL=(ALL) NOPASSWD: ALL'
@@ -25,7 +24,7 @@
 
 - name: Allow 'wheel' group to have passwordless sudo in alpine
   lineinfile:
-    dest: /etc/sudoers
+    path: /etc/sudoers
     state: present
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'

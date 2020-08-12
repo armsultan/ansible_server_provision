@@ -4,10 +4,15 @@
     uid: 900
     comment: ansible user
 
-- name: copy sudoers_ansible
+- name: Add ansible user as sudoer, copy sudoers_ansible file 
   copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
+- name: Add the user 'Ansible' with a primary group of 'admin' (added to sudoer group)
+  user:
+    name: ansible
+    comment: user in admin group
+    group: admin
 
 - name: Set authorized key for 'ansible' taken from file
   authorized_key:
@@ -15,26 +20,18 @@
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
-- name: Add the user 'armand' with a primary group of 'admin' in Alpine
+- name: Add the user 'armand' with a primary group of 'admin' (added to sudoer group)
   user:
     name: armand
     comment: user in admin group
     group: admin
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
-- name: Add the user 'armand' with a primary group of 'admin' in Other distros
-  user:
-    name: armand
-    comment: user in admin group
-    group: admin
-    when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+- name: Add armand user as sudoer, copy sudoers_armand file  
+  copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Set authorized key for 'armand' taken from file
   authorized_key:
     user: armand
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
-
-- name: copy sudoers_armand
-  copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
-  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
