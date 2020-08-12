@@ -16,6 +16,8 @@ cat > /etc/motd << EOF
 
 `date`
 
+Stats are captured every 15min (Not realtime): 
+
  - Hostname............: `uname -n`
  - Uptime..............: $UPTIME_DAYS days, $UPTIME_HOURS hours, $UPTIME_MINUTES minutes
 
