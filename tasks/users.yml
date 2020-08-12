@@ -28,10 +28,11 @@
     name: armand
     comment: user in admin group
     group: admin
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Add the user 'armand' with a primary group of 'admin', using shell in Alpine 
   shell: |
-    usermod -a -G admin armand
+    addgroup armand admin
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
 - name: Add armand user as sudoer, copy sudoers_armand file  
