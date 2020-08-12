@@ -6,6 +6,7 @@
       changed_when: False
 
   tasks:
+    - include: tasks/yum/packages.yml
     - include: tasks/groups.yml
     - include: tasks/motd.yml
     - include: tasks/users.yml
@@ -13,7 +14,6 @@
     - include: tasks/boot_optimization.yml
     - include: tasks/optimize.yml
     - include: tasks/yum/cron.yml
-    - include: tasks/yum/packages.yml
 
   handlers:
     - name: restart ssh
