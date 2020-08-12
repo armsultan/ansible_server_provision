@@ -7,8 +7,8 @@
 
   tasks:
     - include: tasks/apk/packages.yml
-    - include: tasks/groups.yml
     - include: tasks/motd.yml
+    - include: tasks/groups.yml
     - include: tasks/users.yml
     - include: tasks/ssh_access.yml
     - include: tasks/optimize.yml
