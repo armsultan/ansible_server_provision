@@ -14,13 +14,13 @@
     regexp: '^%admin'
     line: '%admin ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
 - name: Make sure we have a 'wheel' group in alpine
   group:
     name: wheel
     state: present
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
 - name: Allow 'wheel' group to have passwordless sudo in alpine
   lineinfile:
@@ -29,4 +29,4 @@
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
-    when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
