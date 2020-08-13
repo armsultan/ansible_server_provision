@@ -1,6 +1,8 @@
 - name: Add the user 'ansible'
   user:
     name: ansible
+    shell: /bin/sh
+    group: ansible
     uid: 900
     comment: ansible user
 
@@ -23,11 +25,11 @@
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
-- name: Add the user 'armand' with a primary group of 'admin' (added to sudoer group)
+- name: Add the user 'Armand' with a bash shell, appending the group 'admin' user's groups
   user:
     name: armand
-    comment: user in admin group
     group: admin
+    append: yes
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Add the user 'armand' with a primary group of 'admin', using shell in Alpine 

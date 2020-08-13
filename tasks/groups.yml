@@ -3,6 +3,11 @@
     name: admin
     state: present
 
+- name: Ensure group "ansible" exists
+  group:
+    name: ansible
+    state: present
+
 - name: copy sudoers admin group for other distros
   copy: src=files/sudoers_admin dest=/etc/sudoers.d/admin owner=root group=root mode=0440
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
