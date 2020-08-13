@@ -1,4 +1,4 @@
-- name: Add the user 'ansible'
+- name: Add the user 'ansible' and add to group 'ansible'
   user:
     name: ansible
     group: ansible
@@ -24,7 +24,7 @@
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
-- name: Add the user 'Armand' with a bash shell, appending the group 'admin' user's groups
+- name: Add the user 'Armand', appending the group 'admin' user's groups
   user:
     name: armand
     group: admin
