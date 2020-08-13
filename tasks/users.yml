@@ -1,7 +1,6 @@
 - name: Add the user 'ansible'
   user:
     name: ansible
-    shell: /bin/sh
     group: ansible
     uid: 900
     comment: ansible user
