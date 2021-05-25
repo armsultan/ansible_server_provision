@@ -2,6 +2,7 @@
   user:
     name: ansible
     group: ansible
+    shell: /bin/bash
     uid: 900
     comment: ansible user
 
@@ -28,6 +29,7 @@
   user:
     name: armand
     group: admin
+    shell: /bin/bash
     append: yes
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
