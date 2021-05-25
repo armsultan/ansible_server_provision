@@ -15,7 +15,7 @@ yum -y install epel-release
 yum -y update
 yum -y install ansible git
 # manually run ansible-pull for the first time
-ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
 ### RHEL
@@ -28,7 +28,7 @@ subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
 yum -y install ansible git
 ansible --version
 # manually run ansible-pull for the first time
-ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
 ### Ubuntu
@@ -39,7 +39,7 @@ apt-add-repository ppa:ansible/ansible
 apt update
 apt -y install ansible git
 # manually run ansible-pull for the first time
-ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
 
 ### Debian
@@ -51,7 +51,7 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 apt update
 apt -y install ansible git
 # manually run ansible-pull for the first time
-ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
 
 ### Alpine
@@ -74,5 +74,5 @@ sudo pip3 install --upgrade pip
 # Install Anisble globally
 sudo pip3 install ansible
 # manually run ansible-pull for the first time
-ansible-pull -o -U https://github.com/armsultan/ansible_server_provision.git local_apk.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apk.yml
 ```
