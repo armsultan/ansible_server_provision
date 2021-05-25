@@ -68,7 +68,7 @@ http://dl-cdn.alpinelinux.org/alpine/v3.12/community
 #http://dl-cdn.alpinelinux.org/alpine/edge/testing
 
 # Install extra packages, including git
-apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass
+apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass cargo
 # Optional: update pip
 pip3 install --upgrade pip
 # Install Anisble globally
