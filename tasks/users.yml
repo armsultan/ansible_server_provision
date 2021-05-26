@@ -29,6 +29,7 @@
   user:
     name: armand
     group: admin
+    password: $5$G/ZwnqseGBADzVfG$ax5P7Z/ZmgELNdqWxurgopuMVdzIYzqtO/sa6JXLEZ8
     shell: /bin/bash
     append: yes
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
