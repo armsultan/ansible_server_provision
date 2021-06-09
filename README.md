@@ -5,7 +5,7 @@ Based off the article [How to manage your workstation configuration with Ansible
 
 ## Prerequsites
 
-1. `git` and `ansible`(**Version 2.9**) are both installed on the system first
+1. `git` and `ansible`(**Version 2.9+**) are both installed on the system first
 2. Then you can manually run `ansible-pull` for the first time (after first run, cron job will automate this)
 
 ### Centos
