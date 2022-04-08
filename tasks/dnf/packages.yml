@@ -3,10 +3,10 @@
     sys_packages: [ 'sudo', 'openssh-server', 'tmux', 'wget', 'curl', 'vim', 'git', 'ca-certificates', 'net-tools', 'bind-utils', 'jq']
   dnf: name={{ sys_packages }} state=latest
 
-- name: Install EPEL repo
-  yum:
-    name: epel-release
-    state: present
+- name: Enable codeready-builder repository
+  community.general.rhsm_repository:
+    name: codeready-builder-for-rhel-8-x86_64-rpms
+  when: ansible_os_family == 'RedHat'
     
 - name: Install htop
   vars:
