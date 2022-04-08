@@ -27,7 +27,7 @@ sudo dnf update -y
 sudo dnf install python3
 subscription-manager register --auto-attach
 subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
-sudo  dnf -y install ansible git
+yum -y install ansible git
 ansible --version
 # manually run ansible-pull for the first time
 ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
@@ -40,7 +40,7 @@ You need to have an account on https://developers.redhat.com before you can do t
 # Install ansible and git
 subscription-manager register --auto-attach
 subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
-yum -y install ansible git
+sudo  dnf -y install ansible git
 ansible --version
 # manually run ansible-pull for the first time
 ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_dnf.yml
