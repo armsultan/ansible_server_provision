@@ -8,7 +8,7 @@
 
 - name: Add ansible user as sudoer, copy sudoers_ansible file 
   copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
-  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
 - name: Add ansible user as sudoer, using shell in Alpine
   lineinfile:
@@ -32,7 +32,7 @@
     password: $5$G/ZwnqseGBADzVfG$ax5P7Z/ZmgELNdqWxurgopuMVdzIYzqtO/sa6JXLEZ8
     shell: /bin/bash
     append: yes
-  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat' 
 
 - name: Add the user 'armand' with a primary group of 'admin', using shell in Alpine 
   shell: |
@@ -41,7 +41,7 @@
 
 - name: Add armand user as sudoer, copy sudoers_armand file  
   copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
-  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
 - name: Set authorized key for 'armand' taken from file
   authorized_key:

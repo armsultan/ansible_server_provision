@@ -1,17 +1,17 @@
 - name: update MOTD for RHEL/Centos systems
   copy: src=files/custom_motd.sh dest=/etc/profile.d owner=root group=root mode='755'
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
 - name: Blank out default static motd for RHEL/Centos systems
   shell: |
     echo '' > /etc/motd
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
 - name: Restart service sshd, in all cases, for RHEL/Centos systems
   service:
     name: sshd
     state: restarted
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
 - name: Disable default MOTD for Ubuntu and Debian systems
   file: dest=/etc/update-motd.d mode='644' state=directory recurse=yes

@@ -12,4 +12,4 @@
 - name: re-generate the /boot/grub2/grub.cfg file for RHEL/CentOS
   shell: |
     grub2-mkconfig –o /boot/grub2/grub.cfg
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
