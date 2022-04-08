@@ -1,4 +1,10 @@
 - name: Install packages
   vars:
-    sys_packages: [ 'sudo', openssh-server, 'htop', 'tmux', 'wget', 'curl', 'vim', 'git', 'ca-certificates', 'net-tools', 'bind-utils', 'jq']
+    sys_packages: [ 'sudo', 'openssh-server', 'tmux', 'wget', 'curl', 'vim', 'git', 'ca-certificates', 'net-tools', 'bind-utils', 'jq']
   dnf: name={{ sys_packages }} state=latest
+
+- name: Add htop repository
+  yum_repository:
+    name: epel-release-latest-8
+    description: EPEL YUM repo latest 8
+    baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
