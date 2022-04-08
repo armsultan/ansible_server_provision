@@ -8,3 +8,8 @@
     name: epel-release-latest-8
     description: EPEL YUM repo latest 8
     baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+- name: Install htop
+  vars:
+    sys_packages: [ 'htop']
+  yum: name={{ sys_packages }} state=latest
