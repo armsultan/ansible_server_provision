@@ -30,7 +30,7 @@ subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
 sudo  dnf -y install ansible git
 ansible --version
 # manually run ansible-pull for the first time
-ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_dnf.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
 ### RHEL 8+
@@ -43,7 +43,7 @@ subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
 yum -y install ansible git
 ansible --version
 # manually run ansible-pull for the first time
-ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
+ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_dnf.yml
 ```
 
 
