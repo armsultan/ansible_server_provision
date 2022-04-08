@@ -1,0 +1,22 @@
+- hosts: localhost
+  become: true
+  pre_tasks:
+    - name: update repositories
+      yum: update_cache=yes
+      changed_when: False
+
+  tasks:
+    - include: tasks/dnf/packages.yml
+    - include: tasks/groups.yml
+    - include: tasks/motd.yml
+    - include: tasks/users.yml
+    - include: tasks/ssh_access.yml
+    - include: tasks/boot_optimization.yml
+    - include: tasks/optimize.yml
+    - include: tasks/dnf/cron.yml
+
+  handlers:
+    - name: restart ssh
+      service:
+        name=sshd
+        state=restarted
