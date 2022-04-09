@@ -2,14 +2,3 @@
   vars:
     sys_packages: [ 'sudo', 'openssh-server', 'tmux', 'wget', 'curl', 'vim', 'git', 'ca-certificates', 'net-tools', 'bind-utils', 'jq']
   dnf: name={{ sys_packages }} state=latest
-
-- name: Enable EPEL Repository on CentOS 8
-  dnf:
-    name: epel-release
-  state: latest
-  become: True
-
-- name: Install htop
-  vars:
-    sys_packages: [ 'htop']
-  yum: name={{ sys_packages }} state=latest
