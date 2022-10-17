@@ -79,8 +79,8 @@ ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git loc
 # https://<mirror-server>/alpine/<version>/[main|community|testing]
 $ cat /etc/apk/repositories
 #/media/cdrom/apks
-http://dl-cdn.alpinelinux.org/alpine/v3.12/main
-http://dl-cdn.alpinelinux.org/alpine/v3.12/community
+http://dl-cdn.alpinelinux.org/alpine/v3.XX/main
+http://dl-cdn.alpinelinux.org/alpine/v3.XX/community
 #http://dl-cdn.alpinelinux.org/alpine/edge/main
 #http://dl-cdn.alpinelinux.org/alpine/edge/community
 #http://dl-cdn.alpinelinux.org/alpine/edge/testing
