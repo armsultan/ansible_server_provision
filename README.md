@@ -85,12 +85,13 @@ http://dl-cdn.alpinelinux.org/alpine/v3.XX/community
 #http://dl-cdn.alpinelinux.org/alpine/edge/community
 #http://dl-cdn.alpinelinux.org/alpine/edge/testing
 
-# Install extra packages, including git
-apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass cargo
+# Install ansible
+apk add ansible
+#apk add gcc git libffi-dev musl-dev openssl-dev perl py-pip python3-dev python3 sshpass cargo
 # Optional: update pip
-pip3 install --upgrade pip
+#pip3 install --upgrade pip
 # Install Anisble globally
-pip3 install ansible
+#pip3 install ansible
 # manually run ansible-pull for the first time
 ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apk.yml
 ```
