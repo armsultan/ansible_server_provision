@@ -5,8 +5,9 @@ Based off the article [How to manage your workstation configuration with Ansible
 
 ## Prerequsites
 
+1. `amd64` Architecture (x86_64). (*Not yet adapted to `arm64`*)
 1. `git` and `ansible`(**Version 2.9+**) are both installed on the system first
-2. Then you can manually run `ansible-pull` for the first time (after first run, cron job will automate this)
+1. Then you can manually run `ansible-pull` for the first time (after first run, cron job will automate this)
 
 ### Centos
 ```bash
