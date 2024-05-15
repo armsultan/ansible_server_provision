@@ -6,17 +6,16 @@
       changed_when: False
 
   tasks:
-    - include: tasks/yum/packages.yml
-    - include: tasks/groups.yml
-    - include: tasks/motd.yml
-    - include: tasks/users.yml
-    - include: tasks/ssh_access.yml
-    - include: tasks/boot_optimization.yml
-    - include: tasks/optimize.yml
-    - include: tasks/yum/cron.yml
+    - include_tasks: tasks/yum/packages.yml
+    - include_tasks: tasks/groups.yml
+    - include_tasks: tasks/motd.yml
+    - include_tasks: tasks/users.yml
+    - include_tasks: tasks/ssh_access.yml
+    - include_tasks: tasks/boot_optimization.yml
+    - include_tasks: tasks/optimize.yml
+    - include_tasks: tasks/yum/cron.yml
 
   handlers:
     - name: restart ssh
-      service:
-        name=sshd
+      service: name=sshd
         state=restarted
