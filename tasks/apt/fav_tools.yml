@@ -72,35 +72,84 @@
   when: lnav.stat.exists
 
 # Install Doggo
-- name: Install Doggo
+- name: Set doggo Version
+  set_fact:
+    doggo_version: "0.3.7"
+
+- name: Download Doggo .tar.gz file
+  get_url:
+    url: "https://github.com/mr-karan/doggo/releases/download/v{{ doggo_version }}/doggo_{{ doggo_version }}_linux_amd64.tar.gz"
+    dest: "/tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz"
+
+- name: unzip Doggo zip file
   shell: |
-    cd "$(mktemp -d)" \
-    curl -sL "https://github.com/mr-karan/doggo/releases/download/v0.3.7/doggo_0.3.7_linux_amd64.tar.gz" | tar xz \
-    mv doggo /usr/local/bin \
-    cd ~
+    tar -vzxf /tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz
   args:
     executable: /bin/bash
+
+- name: Check if Doggo binary exists
+  stat:
+    path: /tmp/doggo
+  register: doggo
+
+- name: add doggo to bin
+  command: mv /tmp/doggo /usr/bin
+  when: doggo.stat.exists
 
 # Install Lazygit
-- name: Install Lazygit
+# Latest: LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
+- name: Set Lazygit Version
+  set_fact:
+    lazygit_version: "0.41.0"
+
+- name: Download Lazygit .tar.gz file
+  get_url:
+    url: "https://github.com/jesseduffield/lazygit/releases/download//v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+    dest: "/tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+
+- name: unzip Lazygit zip file
   shell: |
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
-    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
-    tar xf lazygit.tar.gz lazygit \
-    install lazygit /usr/local/bin \
+    tar -vzxf /tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz
   args:
     executable: /bin/bash
 
+- name: Check if Lazygit binary exists
+  stat:
+    path: /tmp/lazygit
+  register: lazygit
+
+- name: add lazygit to bin
+  command: mv /tmp/lazygit /usr/bin
+  when: lazygit.stat.exists
+
 # Install gping
-- name: Install gping
-  shell: |
-    echo 'deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ bookworm main' | sudo tee /etc/apt/sources.list.d/azlux.list \
-    apt install gpg \
-    curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/azlux.gpg > /dev/null \
-    apt update \
-    apt install gping
+- name: Add Azlux repository to sources list
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ bookworm main"
+    state: present
+    filename: azlux
+
+- name: Ensure GPG and curl are installed
+  apt:
+    name:
+      - gpg
+      - curl
+    state: present
+
+- name: Download and install the Azlux GPG key
+  command: curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/azlux.gpg
   args:
-    executable: /bin/bash
+    creates: /usr/share/keyrings/azlux.gpg
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install gping
+  apt:
+    name: gping
+    state: present
+
 # Install Navi
 - name: Download and install Navi
   shell: |
@@ -109,10 +158,25 @@
     executable: /bin/bash
 
 # Install diff-so-fancy
-- name: Download and install Navi
-  shell: |
-    git clone https://github.com/so-fancy/diff-so-fancy diffsofancy
-    chmod +x diffsofancy/diff-so-fancy
-    mv diff-so-fancy /usr/bin
+- name: Clone the diff-so-fancy repository
+  git:
+    repo: https://github.com/so-fancy/diff-so-fancy.git
+    dest: /tmp/diff-so-fancy
+    version: master
+
+- name: Make diff-so-fancy executable
+  file:
+    path: /tmp/diff-so-fancy/diff-so-fancy
+    mode: "0755"
+    state: file
+
+- name: Move diff-so-fancy to /usr/bin
+  command: mv /tmp/diff-so-fancy/diff-so-fancy /usr/bin/diff-so-fancy
   args:
-    executable: /bin/bash
+    creates: /usr/bin/diff-so-fancy
+
+- name: Clean up temporary directory
+  file:
+    path: /tmp/diff-so-fancy
+    state: absent
+    recurse: yes
