@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: all
   become: true
   pre_tasks:
     - name: update repositories
@@ -13,9 +13,8 @@
     - include_tasks: tasks/ssh_access.yml
     - include_tasks: tasks/optimize.yml
     - include_tasks: tasks/apk/cron.yml
-  
+
   handlers:
     - name: restart ssh
-      service:
-        name=sshd
+      service: name=sshd
         state=restarted
