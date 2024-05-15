@@ -20,157 +20,88 @@
       ]
   apt: name={{ sys_packages }} state=latest
 
-- name: Install Hurl
-  tasks:
-    - name: Set Hurl version
-      set_fact:
-        hurl_version: "4.3.0"
+# Install Hurl
+- name: Set Hurl Version
+  set_fact:
+    hurl_version: "4.3.0"
 
-    - name: Download Hurl .deb file
-      get_url:
-        url: "https://github.com/Orange-OpenSource/hurl/releases/download/{{ hurl_version }}/hurl_{{ hurl_version }}_amd64.deb"
-        dest: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
+- name: Download Hurl .deb file
+  get_url:
+    url: "https://github.com/Orange-OpenSource/hurl/releases/download/{{ hurl_version }}/hurl_{{ hurl_version }}_amd64.deb"
+    dest: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
 
-    - name: Update APT package index
-      apt:
-        update_cache: yes
+- name: Update APT package index
+  apt:
+    update_cache: yes
 
-    - name: Install Hurl
-      apt:
-        deb: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
-        state: present
+- name: Install specific Hurl Version
+  apt:
+    deb: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
+    state: present
 
 - name: Install fx
-  tasks:
-    - name: Download and install fx
-      shell: |
-        sudo curl https://fx.wtf/install.sh
-      args:
-        executable: /bin/bash
+  shell: |
+    sudo curl https://fx.wtf/install.sh
+  args:
+    executable: /bin/bash
 
-- name: Install Tailspin
-  tasks:
-    - name: Ensure build-essential and cargo are installed
-      apt:
-        name:
-          - build-essential
-          - cargo
-        state: present
-        update_cache: yes
+# Install Tailspin
+- name: Ensure build-essential and cargo are installed
+  apt:
+    name:
+      - build-essential
+      - cargo
+    state: present
+    update_cache: yes
 
-    - name: Install Tailspin using cargo
-      shell: cargo install tailspin
-      environment:
-        PATH: "{{ ansible_env.PATH }}:~/.cargo/bin/"
+- name: Install Tailspin using cargo
+  shell: |
+    cargo install tailspin
+  args:
+    executable: /bin/bash
 
-    - name: Add cargo bin to PATH in .bashrc
-      lineinfile:
-        path: ~/.bashrc
-        line: "export PATH=$PATH:~/.cargo/bin/"
-        create: yes
-
-    - name: Source .bashrc to reload environment
-      shell: source ~/.bashrc
-      args:
-        executable: /bin/bash
-
+# Install Doggo
 - name: Install Doggo
-  tasks:
-    - name: Create a temporary directory
-      command: mktemp -d
-      register: temp_dir
+  shell: |
+    cd "$(mktemp -d)" \
+    curl -sL "https://github.com/mr-karan/doggo/releases/download/v0.3.7/doggo_0.3.7_linux_amd64.tar.gz" | tar xz \
+    mv doggo /usr/local/bin \
+    cd ~
+  args:
+    executable: /bin/bash
 
-    - name: Change to the temporary directory
-      command: chdir={{ temp_dir.stdout }}
-
-    - name: Download and extract Doggo
-      unarchive:
-        src: "https://github.com/mr-karan/doggo/releases/download/v0.3.7/doggo_0.3.7_linux_amd64.tar.gz"
-        dest: "{{ temp_dir.stdout }}"
-        remote_src: yes
-        creates: "{{ temp_dir.stdout }}/doggo"
-
-    - name: Move Doggo binary to /usr/local/bin
-      command: mv {{ temp_dir.stdout }}/doggo /usr/local/bin
-
+# Install Lazygit
 - name: Install Lazygit
-  tasks:
-    - name: Create a temporary directory
-      command: mktemp -d
-      register: temp_dir
+  shell: |
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
+    tar xf lazygit.tar.gz lazygit \
+    install lazygit /usr/local/bin \
+  args:
+    executable: /bin/bash
 
-    - name: Change to the temporary directory
-      command: chdir={{ temp_dir.stdout }}
+# Install gping
+- name: Install gping
+  shell: |
+    echo 'deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ bookworm main' | sudo tee /etc/apt/sources.list.d/azlux.list \
+    apt install gpg \
+    curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/azlux.gpg > /dev/null \
+    apt update \
+    apt install gping
+  args:
+    executable: /bin/bash
+# Install Navi
+- name: Download and install Navi
+  shell: |
+    bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
+  args:
+    executable: /bin/bash
 
-    - name: Get the latest Lazygit version
-      shell: |
-        curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*'
-      register: lazygit_version
-
-    - name: Download Lazygit tar.gz
-      get_url:
-        url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version.stdout }}_Linux_x86_64.tar.gz"
-        dest: "{{ temp_dir.stdout }}/lazygit.tar.gz"
-
-    - name: Extract Lazygit tar.gz
-      unarchive:
-        src: "{{ temp_dir.stdout }}/lazygit.tar.gz"
-        dest: "{{ temp_dir.stdout }}"
-        remote_src: yes
-        extra_opts: [--strip-components=1]
-        creates: "{{ temp_dir.stdout }}/lazygit"
-
-    - name: Install Lazygit binary to /usr/local/bin
-      command: sudo install {{ temp_dir.stdout }}/lazygit /usr/local/bin
-
-    - name: Change back to the home
-
-- name: Install Gping
-  tasks:
-    - name: Add azlux repository to sources list
-      apt_repository:
-        repo: "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main"
-        state: present
-        filename: azlux
-
-    - name: Download azlux repository GPG key
-      get_url:
-        url: "https://azlux.fr/repo.gpg"
-        dest: "/usr/share/keyrings/azlux-archive-keyring.gpg"
-        mode: "0644"
-
-    - name: Update APT package index
-      apt:
-        update_cache: yes
-
-    - name: Install Gping
-      apt:
-        name: gping
-        state: present
-
-- name: Install Navi
-  hosts: all
-  become: yes
-  tasks:
-    - name: Download and install Navi
-      shell: |
-        bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
-      args:
-        executable: /bin/bash
-
-- name: Install diff-so-fancy
-  tasks:
-    - name: Add diff-so-fancy PPA
-      apt_repository:
-        repo: ppa:aos1/diff-so-fancy
-        state: present
-
-    - name: Update APT package index
-      apt:
-        update_cache: yes
-
-    - name: Install diff-so-fancy
-      apt:
-        name: diff-so-fancy
-        state: present
-        update_cache: yes
+# Install diff-so-fancy
+- name: Download and install Navi
+  shell: |
+    git clone https://github.com/so-fancy/diff-so-fancy diffsofancy
+    chmod +x diffsofancy/diff-so-fancy
+    mv diff-so-fancy /usr/bin
+  args:
+    executable: /bin/bash
