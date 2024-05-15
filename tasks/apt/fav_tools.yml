@@ -39,26 +39,37 @@
     deb: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
     state: present
 
+# Install fx
 - name: Install fx
   shell: |
-    sudo curl https://fx.wtf/install.sh
+    curl https://fx.wtf/install.sh | sh
   args:
     executable: /bin/bash
 
-# Install Tailspin
-- name: Ensure build-essential and cargo are installed
-  apt:
-    name:
-      - build-essential
-      - cargo
-    state: present
-    update_cache: yes
+# Install lnav
+- name: Set lnav Version
+  set_fact:
+    lnav_version: "0.12.2"
 
-- name: Install Tailspin using cargo
+- name: Download lnav .deb file
+  get_url:
+    url: "https://github.com/tstack/lnav/releases/download/v{{ lnav_version }}/lnav-{{ lnav_version }}-linux-musl-x86_64.zip"
+    dest: "/tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip"
+
+- name: unzip lnav zip file
   shell: |
-    cargo install tailspin
+    unzip /tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip
   args:
     executable: /bin/bash
+
+- name: Check if lnav binary exists
+  stat:
+    path: /tmp/lnav-0.12.2/lnav
+  register: lnav
+
+- name: add lnav to bin
+  command: mv /tmp/lnav-0.12.2/lnav /usr/bin
+  when: lnav.stat.exists
 
 # Install Doggo
 - name: Install Doggo
