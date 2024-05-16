@@ -24,26 +24,30 @@
   apt:
     update_cache: yes
 
-# Install fzf (latest)
+# Install fzf (latest) for USER
 - name: git download latest fzf
   become: true
   become_user: "{{ user }}"
   shell: |
-    git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/.fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   args:
     executable: /bin/bash
   vars:
     user: armand
 
 - name: Check if fzf git exists
+  become: true
+  become_user: "{{ user }}"
   stat:
-    path: /tmp/.fzf
+    path: ~/.fzf
   register: fzf
+  vars:
+    user: armand
 
 - name: Install fzf for armand
   become: true
   become_user: "{{ user }}"
-  shell: printf 'yyy' | /tmp/.fzf/install
+  shell: printf 'yyy' | ~/.fzf/install
   when: fzf.stat.exists
   vars:
     user: armand
