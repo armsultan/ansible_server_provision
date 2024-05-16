@@ -20,6 +20,10 @@
       ]
   apt: name={{ sys_packages }} state=latest
 
+- name: Update APT package index
+  apt:
+    update_cache: yes
+
 # Install Hurl
 - name: Set Hurl Version
   set_fact:
@@ -29,10 +33,6 @@
   get_url:
     url: "https://github.com/Orange-OpenSource/hurl/releases/download/{{ hurl_version }}/hurl_{{ hurl_version }}_amd64.deb"
     dest: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
-
-- name: Update APT package index
-  apt:
-    update_cache: yes
 
 - name: Install specific Hurl Version
   apt:
@@ -153,26 +153,18 @@
   command: mv /tmp/navi /usr/bin
   when: navi.stat.exists
 
-# Install diff-so-fancy
-- name: Clone the diff-so-fancy repository
-  git:
-    repo: https://github.com/so-fancy/diff-so-fancy.git
-    dest: /tmp/diff-so-fancy
-    version: master
+# Install delta
+# Latest: https://github.com/dandavison/delta/tags
+- name: Set delta Version
+  set_fact:
+    delta_version: "0.17.0"
 
-- name: Make diff-so-fancy executable
-  file:
-    path: /tmp/diff-so-fancy/diff-so-fancy
-    mode: "0755"
-    state: file
+- name: Download delta .deb file
+  get_url:
+    url: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
+    dest: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
 
-- name: Move diff-so-fancy to /usr/bin
-  command: mv /tmp/diff-so-fancy/diff-so-fancy /usr/bin/diff-so-fancy
-  args:
-    creates: /usr/bin/diff-so-fancy
-
-- name: Clean up temporary directory
-  file:
-    path: /tmp/diff-so-fancy
-    state: absent
-    recurse: yes
+- name: Install specific delta Version
+  apt:
+    deb: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
+    state: present
