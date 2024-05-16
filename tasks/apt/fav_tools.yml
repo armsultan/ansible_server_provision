@@ -26,10 +26,14 @@
 
 # Install fzf (latest)
 - name: git download latest fzf
+  become: true
+  become_user: "{{ user }}"
   shell: |
     git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/.fzf
   args:
     executable: /bin/bash
+  vars:
+    user: armand
 
 - name: Check if fzf git exists
   stat:
