@@ -58,17 +58,17 @@
 
 - name: unzip lnav zip file
   shell: |
-    unzip /tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip
+    unzip -o /tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip -d /tmp/lnav-{{ lnav_version }}
   args:
     executable: /bin/bash
 
 - name: Check if lnav binary exists
   stat:
-    path: /tmp/lnav-0.12.2/lnav
+    path: /tmp/nav-{{ lnav_version }}/lnav
   register: lnav
 
 - name: add lnav to bin
-  command: mv /tmp/lnav-0.12.2/lnav /usr/bin
+  command: mv /tmp/nav-{{ lnav_version }}lnav /usr/bin
   when: lnav.stat.exists
 
 # Install Doggo
