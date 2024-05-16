@@ -55,7 +55,7 @@
 - name: reload config file for armand
   become: true
   become_user: "{{ user }}"
-  shell: source ~/.bashrc
+  shell: source "~/.bashrc"
   vars:
     user: armand
 
