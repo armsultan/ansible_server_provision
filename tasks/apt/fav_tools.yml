@@ -107,7 +107,7 @@
     url: "https://github.com/jesseduffield/lazygit/releases/download//v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
     dest: "/tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
 
-- name: unzip Lazygit zip file
+- name: untar Lazygit zip file
   shell: |
     tar -vzxf /tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz -C /tmp
   args:
