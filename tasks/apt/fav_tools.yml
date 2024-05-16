@@ -24,41 +24,6 @@
   apt:
     update_cache: yes
 
-# Install fzf (latest) for USER
-- name: git download latest fzf
-  become: true
-  become_user: "{{ user }}"
-  shell: |
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  args:
-    executable: /bin/bash
-  vars:
-    user: armand
-
-- name: Check if fzf git exists
-  become: true
-  become_user: "{{ user }}"
-  stat:
-    path: ~/.fzf
-  register: fzf
-  vars:
-    user: armand
-
-- name: Install fzf for armand
-  become: true
-  become_user: "{{ user }}"
-  shell: printf 'yyy' | ~/.fzf/install
-  when: fzf.stat.exists
-  vars:
-    user: armand
-
-- name: reload config file for armand
-  become: true
-  become_user: "{{ user }}"
-  shell: source "~/.bashrc"
-  vars:
-    user: armand
-
 # Install batcat
 - name: Install batcat
   vars:
@@ -215,3 +180,39 @@
   apt:
     deb: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
     state: present
+
+# Install fzf (latest) for USER
+- name: Check if fzf git exists
+  become: true
+  become_user: "{{ user }}"
+  stat:
+    path: ~/.fzf
+  register: fzf
+  vars:
+    user: armand
+
+- name: git download latest fzf
+  become: true
+  become_user: "{{ user }}"
+  shell: |
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  when: fzf.stat.exists == false
+  args:
+    executable: /bin/bash
+  vars:
+    user: armand
+
+- name: Install fzf for armand
+  become: true
+  become_user: "{{ user }}"
+  shell: printf 'yyy' | ~/.fzf/install
+  when: fzf.stat.exists
+  vars:
+    user: armand
+
+- name: reload config file for armand
+  become: true
+  become_user: "{{ user }}"
+  shell: source "~/.bashrc"
+  vars:
+    user: armand
