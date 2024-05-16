@@ -83,7 +83,7 @@
 
 - name: unzip Doggo zip file
   shell: |
-    tar -vzxf /tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz
+    tar -vzxf /tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz -C /tmp
   args:
     executable: /bin/bash
 
