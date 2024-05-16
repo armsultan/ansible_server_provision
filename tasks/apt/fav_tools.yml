@@ -4,6 +4,8 @@
       [
         "jq",
         "yq",
+        "fzf",
+        "bat",
         "httpie",
         "tig",
         "exa",
