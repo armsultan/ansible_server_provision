@@ -4,8 +4,6 @@
       [
         "jq",
         "yq",
-        "fzf",
-        "bat",
         "httpie",
         "tig",
         "exa",
@@ -25,6 +23,45 @@
 - name: Update APT package index
   apt:
     update_cache: yes
+
+# Install fzf (latest)
+- name: git download latest fzf
+  shell: |
+    git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/.fzf
+  args:
+    executable: /bin/bash
+
+- name: Check if fzf git exists
+  stat:
+    path: /tmp/.fzf
+  register: fzf
+
+- name: Install fzf for armand
+  become: true
+  become_user: "{{ user }}"
+  shell: printf 'yyy' | /tmp/.fzf/install
+  when: fzf.stat.exists
+  vars:
+    user: armand
+
+- name: reload config file for armand
+  become: true
+  become_user: "{{ user }}"
+  shell: source ~/.bashrc
+  vars:
+    user: armand
+
+# Install batcat
+- name: Install batcat
+  vars:
+    bat_packages: ["bat"]
+  apt: name={{ bat_packages }} state=latest
+
+- name: add bat -> batcat symlink
+  shell: |
+    ln -s $(which batcat) /usr/bin/bat
+  args:
+    executable: /bin/bash
 
 # Install Hurl
 - name: Set Hurl Version
