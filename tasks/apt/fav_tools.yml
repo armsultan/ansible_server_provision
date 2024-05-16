@@ -97,14 +97,14 @@
   when: doggo.stat.exists
 
 # Install Lazygit
-# Latest: LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
+# Latest: LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 - name: Set Lazygit Version
   set_fact:
     lazygit_version: "0.41.0"
 
 - name: Download Lazygit .tar.gz file
   get_url:
-    url: "https://github.com/jesseduffield/lazygit/releases/download//v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+    url: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
     dest: "/tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
 
 - name: untar Lazygit zip file
@@ -125,15 +125,33 @@
 # Install gping
 - name: Install gping
   vars:
-    sys_packages: ["gping"]
-  apt: name={{ sys_packages }} state=latest
+    gping_packages: ["gping"]
+  apt: name={{ gping_packages }} state=latest
 
 # Install Navi
-- name: Download and install Navi
+# Latest: NAVI_VERSION=$(curl -s "https://api.github.com/repos/denisidoro/navi/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+- name: Set Navi Version
+  set_fact:
+    navi_version: "2.23.0"
+
+- name: Download Navi .tar.gz file
+  get_url:
+    url: "https://github.com/denisidoro/navi/releases/download/v{{ navi_version }}/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz"
+    dest: "/tmp/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz"
+- name: untar Lazygit zip file
   shell: |
-    bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
+    tar -vzxf /tmp/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz -C /tmp
   args:
     executable: /bin/bash
+
+- name: Check if Navi binary exists
+  stat:
+    path: /tmp/navi
+  register: navi
+
+- name: add navi to bin
+  command: mv /tmp/navi /usr/bin
+  when: navi.stat.exists
 
 # Install diff-so-fancy
 - name: Clone the diff-so-fancy repository
