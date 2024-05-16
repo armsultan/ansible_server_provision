@@ -109,7 +109,7 @@
 
 - name: unzip Lazygit zip file
   shell: |
-    tar -vzxf /tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz
+    tar -vzxf /tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz -C /tmp
   args:
     executable: /bin/bash
 
@@ -123,32 +123,10 @@
   when: lazygit.stat.exists
 
 # Install gping
-- name: Add Azlux repository to sources list
-  apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ bookworm main"
-    state: present
-    filename: azlux
-
-- name: Ensure GPG and curl are installed
-  apt:
-    name:
-      - gpg
-      - curl
-    state: present
-
-- name: Download and install the Azlux GPG key
-  command: curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/azlux.gpg
-  args:
-    creates: /usr/share/keyrings/azlux.gpg
-
-- name: Update apt cache
-  apt:
-    update_cache: yes
-
 - name: Install gping
-  apt:
-    name: gping
-    state: present
+  vars:
+    sys_packages: ["gping"]
+  apt: name={{ sys_packages }} state=latest
 
 # Install Navi
 - name: Download and install Navi
