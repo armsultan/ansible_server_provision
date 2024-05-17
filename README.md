@@ -15,6 +15,8 @@ Based off the article [How to manage your workstation configuration with Ansible
 yum -y install epel-release
 yum -y update
 yum -y install ansible git
+# Check Ansible version
+ansible --version
 # manually run ansible-pull for the first time
 ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
@@ -26,12 +28,13 @@ You need to have an account on https://developers.redhat.com before you can do t
 # Install ansible and git
 sudo dnf update -y
 sudo dnf install python3
-subscription-manager register --auto-attach
-subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
-yum -y install ansible git
+sudo subscription-manager register --auto-attach
+sudo subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
+sudo yum -y install ansible git
+# Check Ansible version
 ansible --version
 # manually run ansible-pull for the first time
-ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
+sudo ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_yum.yml
 ```
 
 ### RHEL 8+
@@ -39,38 +42,44 @@ You need to have an account on https://developers.redhat.com before you can do t
 
 ```bash
 # Install ansible and git
-subscription-manager register --auto-attach
-subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
+sudo subscription-manager register --auto-attach
+sudo subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
 sudo  dnf -y install ansible git
+# Check Ansible version
 ansible --version
 # manually run ansible-pull for the first time
 ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_dnf.yml
 ```
 
-
-
 ### Ubuntu
 ```bash
 # Install ansible and git
-apt-get -y install software-properties-common gnupg2 
-apt-add-repository -y ppa:ansible/ansible
-apt update
-apt -y install ansible git
+sudo apt-get -y install software-properties-common gnupg2 
+sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt update
+sudo apt -y install ansible git
+# Check Ansible version
+ansible --version
 # manually run ansible-pull for the first time
-ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+sudo ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
-
 ### Debian
 ```bash
+sudo apt update
+sudo apt-get -y install software-properties-common gnupg2 wget
 # Install ansible and git
-apt-get install -y software-properties-common gnupg2 sudo
-# echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list
-echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main" >> /etc/apt/sources.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-apt update
-apt -y install ansible git
+# Debian 12 (Bookworm) -> Ubuntu 22.04 (Jammy) = jammy
+# Debian 11 (Bullseye) -> Ubuntu 20.04 (Focal) = focal
+# Debian 10 (Buster) -> Ubuntu 18.04 (Bionic) = bionic
+UBUNTU_CODENAME=jammy
+wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/ansible.list
+sudo apt update
+sudo apt -y install ansible git
+# Check Ansible version
+ansible --version
 # manually run ansible-pull for the first time
-ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
+sudo ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
 
 ### Alpine
@@ -93,6 +102,8 @@ apk add ansible
 #pip3 install --upgrade pip
 # Install Anisble globally
 #pip3 install ansible
+# Check Ansible version
+ansible --version
 # manually run ansible-pull for the first time
 ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apk.yml
 ```
