@@ -220,6 +220,6 @@
   become: true
   become_user: "{{ user }}"
   sudo: no
-  shell: . /home/{{ user }}/.bashrc && cat .bashrc
+  shell: . /home/{{ user }}/.bashrc
   vars:
     user: armand
