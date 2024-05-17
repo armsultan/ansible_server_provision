@@ -12,9 +12,13 @@
 
 - name: update-grub2 for Debian/Ubuntu
   command: update-grub2
-  when: grub_file.stat.exists and ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+  when:
+    - grub_file.stat.exists
+    - ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
 - name: re-generate the /boot/grub2/grub.cfg file for RHEL/CentOS
   shell: |
     grub2-mkconfig –o /boot/grub2/grub.cfg
-  when: grub_file.stat.exists and ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
+  when:
+    - grub_file.stat.exists
+    - ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
