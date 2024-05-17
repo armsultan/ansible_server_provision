@@ -30,9 +30,15 @@
     bat_packages: ["bat"]
   apt: name={{ bat_packages }} state=latest
 
+- name: Check if bat executable exists
+  stat:
+    path: /usr/bin/bat
+  register: bat
+
 - name: add bat -> batcat symlink
   shell: |
     ln -s $(which batcat) /usr/bin/bat
+  when: bat.stat.exists == false
   args:
     executable: /bin/bash
 
