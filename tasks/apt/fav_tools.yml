@@ -211,7 +211,7 @@
 - name: Install fzf for armand
   become: true
   become_user: "{{ user }}"
-  shell: printf 'yyy' | ~/.fzf/install
+  command: printf 'yyy' | ~/.fzf/install
   when: fzf.stat.exists
   vars:
     user: armand
