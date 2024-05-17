@@ -6,7 +6,7 @@
     uid: 900
     comment: ansible user
 
-- name: Add ansible user as sudoer, copy sudoers_ansible file 
+- name: Add ansible user as sudoer, copy sudoers_ansible file
   copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
@@ -14,9 +14,9 @@
   lineinfile:
     path: /etc/sudoers
     state: present
-    regexp: '^%ansible'
-    line: '%ansible ALL=(ALL) NOPASSWD: ALL'
-    validate: 'visudo -cf %s'
+    regexp: "^%ansible"
+    line: "%ansible ALL=(ALL) NOPASSWD: ALL"
+    validate: "visudo -cf %s"
   when: ansible_distribution == 'Alpine'
 
 - name: Set authorized key for 'ansible' taken from file
@@ -25,26 +25,26 @@
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
-- name: Add the user 'Armand', appending the group 'admin' user's groups
+- name: Add the user '{{ user }}', appending the group 'admin' user's groups
   user:
-    name: armand
+    name: "{{ user }}"
     group: admin
     password: $5$G/ZwnqseGBADzVfG$ax5P7Z/ZmgELNdqWxurgopuMVdzIYzqtO/sa6JXLEZ8
     shell: /bin/bash
     append: yes
-  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat' 
+  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
-- name: Add the user 'armand' with a primary group of 'admin', using shell in Alpine 
+- name: Add the user '{{ user }}' with a primary group of 'admin', using shell in Alpine
   shell: |
-    addgroup armand admin
+    addgroup {{ user }} admin
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
 
-- name: Add armand user as sudoer, copy sudoers_armand file  
-  copy: src=files/sudoers_armand dest=/etc/sudoers.d/armand owner=root group=root mode=0440
+- name: Add {{ user }} user as sudoer, copy sudoers_{{ user }} file
+  copy: src=files/sudoers_{{ user }} dest=/etc/sudoers.d/{{ user }} owner=root group=root mode=0440
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
-- name: Set authorized key for 'armand' taken from file
+- name: Set authorized key for '{{ user }}' taken from file
   authorized_key:
-    user: armand
+    user: "{{ user }}"
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
