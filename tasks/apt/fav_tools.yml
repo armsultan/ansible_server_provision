@@ -207,8 +207,10 @@
 - name: Install fzf for armand
   become: true
   become_user: "{{ user }}"
-  command: printf 'yyy' | /home/{{ user }}/.fzf/install
   when: fzfdownloaded.stat.exists
+  shell: printf 'yyy' | /home/{{ user }}/.fzf/install
+  args:
+    executable: /bin/bash
 
 #source bashrc
 - name: reload config file for {{ user }}
