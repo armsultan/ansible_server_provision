@@ -4,7 +4,8 @@
     - name: update repositories
       apk:
         update_cache: yes
-
+  vars:
+    user: armand
   tasks:
     - include_tasks: tasks/apk/packages.yml
     - include_tasks: tasks/motd.yml
