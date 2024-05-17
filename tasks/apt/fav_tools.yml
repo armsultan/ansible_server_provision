@@ -219,6 +219,8 @@
 - name: reload config file for armand
   become: true
   become_user: "{{ user }}"
-  command: source /home/{{ user }}/.bashrc
+  shell: source /home/{{ user }}/.bashrc
+  args:
+    executable: /bin/bash
   vars:
     user: armand
