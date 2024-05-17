@@ -6,7 +6,8 @@
       apt:
         update_cache: yes
       changed_when: false
-
+  vars:
+    user: armand
   tasks:
     - include_tasks: tasks/apt/packages.yml
     - include_tasks: tasks/groups.yml

@@ -4,7 +4,8 @@
     - name: update repositories
       yum: update_cache=yes
       changed_when: False
-
+  vars:
+    user: armand
   tasks:
     - include_tasks: tasks/dnf/packages.yml
     - include_tasks: tasks/groups.yml
