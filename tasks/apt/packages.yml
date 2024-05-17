@@ -3,6 +3,7 @@
     sys_packages:
       [
         "sudo",
+        "cron",
         "openssh-client",
         "openssh-server",
         "htop",
@@ -10,6 +11,7 @@
         "wget",
         "curl",
         "vim",
+        "nano",
         "git",
         "apt-transport-https",
         "ca-certificates",

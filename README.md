@@ -58,26 +58,26 @@ sudo apt-get -y install software-properties-common gnupg2 \
     && sudo apt-add-repository -y ppa:ansible/ansible \
     && sudo apt update \
     && sudo apt -y install ansible git \
-# Check Ansible version
     && ansible --version
 # manually run ansible-pull for the first time
 sudo ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
 ### Debian
 ```bash
-sudo apt update
-sudo apt-get -y install software-properties-common gnupg2 wget
-# Install ansible and git
+# Note:
 # Debian 12 (Bookworm) -> Ubuntu 22.04 (Jammy) = jammy
 # Debian 11 (Bullseye) -> Ubuntu 20.04 (Focal) = focal
 # Debian 10 (Buster) -> Ubuntu 18.04 (Bionic) = bionic
-UBUNTU_CODENAME=jammy
-wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/ansible.list
-sudo apt update
-sudo apt -y install ansible git
-# Check Ansible version
-ansible --version
+
+# Install ansible and git
+sudo apt update \
+    && sudo apt-get -y install software-properties-common gnupg2 wget \
+    && UBUNTU_CODENAME=jammy \
+    && wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/ansible.list \
+    && sudo apt update \
+    && sudo apt -y install ansible git \
+    ansible --version
 # manually run ansible-pull for the first time
 sudo ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
