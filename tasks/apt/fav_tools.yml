@@ -185,7 +185,7 @@
   become: true
   become_user: "{{ user }}"
   stat:
-    path: ~/.fzf
+    path: /home/{{ user }}/.fzf
   register: fzf
   # vars:
   #   user: armand
@@ -194,7 +194,7 @@
   become: true
   become_user: "{{ user }}"
   shell: |
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git /home/{{ user }}/.fzf
   when: fzf.stat.exists == false
   args:
     executable: /bin/bash
@@ -204,7 +204,7 @@
 - name: Install fzf for armand
   become: true
   become_user: "{{ user }}"
-  command: printf 'yyy' | ~/.fzf/install
+  command: printf 'yyy' | /home/{{ user }}/.fzf/install
   when: fzf.stat.exists
   # vars:
   #   user: armand
