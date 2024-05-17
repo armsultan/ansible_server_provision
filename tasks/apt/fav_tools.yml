@@ -1,217 +1,210 @@
-- name: Install Favourite tools
-  hosts: all
-  tasks:
-    - name: Install apt packages
-      vars:
-        sys_packages:
-          [
-            "jq",
-            "yq",
-            "httpie",
-            "tig",
-            "exa",
-            "fd-find",
-            "neofetch",
-            "tmux",
-            "bpytop",
-            "duf",
-            "rclone",
-            "micro",
-            "ripgrep",
-            "silversearcher-ag",
-            "tre-command",
-          ]
-      apt: name={{ sys_packages }} state=latest
+- name: Install apt packages
+  vars:
+    sys_packages:
+      [
+        "jq",
+        "yq",
+        "httpie",
+        "tig",
+        "exa",
+        "fd-find",
+        "neofetch",
+        "tmux",
+        "bpytop",
+        "duf",
+        "rclone",
+        "micro",
+        "ripgrep",
+        "silversearcher-ag",
+        "tre-command",
+      ]
+  apt: name={{ sys_packages }} state=latest
 
-    - name: Update APT package index
-      apt:
-        update_cache: yes
+- name: Install batcat
+  vars:
+    bat_packages: ["bat"]
+  apt: name={{ bat_packages }} state=latest
 
-    - name: Install batcat
-      vars:
-        bat_packages: ["bat"]
-      apt: name={{ bat_packages }} state=latest
+- name: Check if bat executable exists
+  stat:
+    path: /usr/bin/bat
+  register: bat
 
-    - name: Check if bat executable exists
-      stat:
-        path: /usr/bin/bat
-      register: bat
+- name: add bat -> batcat symlink
+  shell: |
+    ln -s $(which batcat) /usr/bin/bat
+  when: bat.stat.exists == false
+  args:
+    executable: /bin/bash
 
-    - name: add bat -> batcat symlink
-      shell: |
-        ln -s $(which batcat) /usr/bin/bat
-      when: bat.stat.exists == false
-      args:
-        executable: /bin/bash
+- name: Set Hurl Version
+  set_fact:
+    hurl_version: "4.3.0"
 
-    - name: Set Hurl Version
-      set_fact:
-        hurl_version: "4.3.0"
+- name: Download Hurl .deb file
+  get_url:
+    url: "https://github.com/Orange-OpenSource/hurl/releases/download/{{ hurl_version }}/hurl_{{ hurl_version }}_amd64.deb"
+    dest: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
 
-    - name: Download Hurl .deb file
-      get_url:
-        url: "https://github.com/Orange-OpenSource/hurl/releases/download/{{ hurl_version }}/hurl_{{ hurl_version }}_amd64.deb"
-        dest: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
+- name: Install specific Hurl Version
+  apt:
+    deb: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
+    state: present
 
-    - name: Install specific Hurl Version
-      apt:
-        deb: "/tmp/hurl_{{ hurl_version }}_amd64.deb"
-        state: present
+- name: Install fx
+  shell: |
+    curl https://fx.wtf/install.sh | sh
+  args:
+    executable: /bin/bash
 
-    - name: Install fx
-      shell: |
-        curl https://fx.wtf/install.sh | sh
-      args:
-        executable: /bin/bash
+- name: Set lnav Version
+  set_fact:
+    lnav_version: "0.12.2"
 
-    - name: Set lnav Version
-      set_fact:
-        lnav_version: "0.12.2"
+- name: Download lnav .deb file
+  get_url:
+    url: "https://github.com/tstack/lnav/releases/download/v{{ lnav_version }}/lnav-{{ lnav_version }}-linux-musl-x86_64.zip"
+    dest: "/tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip"
 
-    - name: Download lnav .deb file
-      get_url:
-        url: "https://github.com/tstack/lnav/releases/download/v{{ lnav_version }}/lnav-{{ lnav_version }}-linux-musl-x86_64.zip"
-        dest: "/tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip"
+- name: unzip lnav zip file
+  shell: |
+    unzip -o /tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip -d /tmp/lnav-{{ lnav_version }}
+  args:
+    executable: /bin/bash
 
-    - name: unzip lnav zip file
-      shell: |
-        unzip -o /tmp/lnav-{{ lnav_version }}-linux-musl-x86_64.zip -d /tmp/lnav-{{ lnav_version }}
-      args:
-        executable: /bin/bash
+- name: Check if lnav binary exists
+  stat:
+    path: /tmp/nav-{{ lnav_version }}/lnav
+  register: lnav
 
-    - name: Check if lnav binary exists
-      stat:
-        path: /tmp/nav-{{ lnav_version }}/lnav
-      register: lnav
+- name: add lnav to bin
+  command: mv /tmp/nav-{{ lnav_version }}lnav /usr/bin
+  when: lnav.stat.exists
 
-    - name: add lnav to bin
-      command: mv /tmp/nav-{{ lnav_version }}lnav /usr/bin
-      when: lnav.stat.exists
+- name: Set doggo Version
+  set_fact:
+    doggo_version: "0.3.7"
 
-    - name: Set doggo Version
-      set_fact:
-        doggo_version: "0.3.7"
+- name: Download Doggo .tar.gz file
+  get_url:
+    url: "https://github.com/mr-karan/doggo/releases/download/v{{ doggo_version }}/doggo_{{ doggo_version }}_linux_amd64.tar.gz"
+    dest: "/tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz"
 
-    - name: Download Doggo .tar.gz file
-      get_url:
-        url: "https://github.com/mr-karan/doggo/releases/download/v{{ doggo_version }}/doggo_{{ doggo_version }}_linux_amd64.tar.gz"
-        dest: "/tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz"
+- name: unzip Doggo zip file
+  shell: |
+    tar -vzxf /tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz -C /tmp
+  args:
+    executable: /bin/bash
 
-    - name: unzip Doggo zip file
-      shell: |
-        tar -vzxf /tmp/doggo_{{ doggo_version }}_linux_amd64.tar.gz -C /tmp
-      args:
-        executable: /bin/bash
+- name: Check if Doggo binary exists
+  stat:
+    path: /tmp/doggo
+  register: doggo
 
-    - name: Check if Doggo binary exists
-      stat:
-        path: /tmp/doggo
-      register: doggo
+- name: add doggo to bin
+  command: mv /tmp/doggo /usr/bin
+  when: doggo.stat.exists
 
-    - name: add doggo to bin
-      command: mv /tmp/doggo /usr/bin
-      when: doggo.stat.exists
+- name: Set Lazygit Version
+  set_fact:
+    lazygit_version: "0.41.0"
 
-    - name: Set Lazygit Version
-      set_fact:
-        lazygit_version: "0.41.0"
+- name: Download Lazygit .tar.gz file
+  get_url:
+    url: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+    dest: "/tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
 
-    - name: Download Lazygit .tar.gz file
-      get_url:
-        url: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
-        dest: "/tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+- name: untar Lazygit zip file
+  shell: |
+    tar -vzxf /tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz -C /tmp
+  args:
+    executable: /bin/bash
 
-    - name: untar Lazygit zip file
-      shell: |
-        tar -vzxf /tmp/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz -C /tmp
-      args:
-        executable: /bin/bash
+- name: Check if Lazygit binary exists
+  stat:
+    path: /tmp/lazygit
+  register: lazygit
 
-    - name: Check if Lazygit binary exists
-      stat:
-        path: /tmp/lazygit
-      register: lazygit
+- name: add lazygit to bin
+  command: mv /tmp/lazygit /usr/bin
+  when: lazygit.stat.exists
 
-    - name: add lazygit to bin
-      command: mv /tmp/lazygit /usr/bin
-      when: lazygit.stat.exists
+- name: Install gping
+  vars:
+    gping_packages: ["gping"]
+  apt: name={{ gping_packages }} state=latest
 
-    - name: Install gping
-      vars:
-        gping_packages: ["gping"]
-      apt: name={{ gping_packages }} state=latest
+- name: Set Navi Version
+  set_fact:
+    navi_version: "2.23.0"
 
-    - name: Set Navi Version
-      set_fact:
-        navi_version: "2.23.0"
+- name: Download Navi .tar.gz file
+  get_url:
+    url: "https://github.com/denisidoro/navi/releases/download/v{{ navi_version }}/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz"
+    dest: "/tmp/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz"
 
-    - name: Download Navi .tar.gz file
-      get_url:
-        url: "https://github.com/denisidoro/navi/releases/download/v{{ navi_version }}/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz"
-        dest: "/tmp/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz"
+- name: untar Lazygit zip file
+  shell: |
+    tar -vzxf /tmp/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz -C /tmp
+  args:
+    executable: /bin/bash
 
-    - name: untar Lazygit zip file
-      shell: |
-        tar -vzxf /tmp/navi-v{{ navi_version }}-x86_64-unknown-linux-musl.tar.gz -C /tmp
-      args:
-        executable: /bin/bash
+- name: Check if Navi binary exists
+  stat:
+    path: /tmp/navi
+  register: navi
 
-    - name: Check if Navi binary exists
-      stat:
-        path: /tmp/navi
-      register: navi
+- name: add navi to bin
+  command: mv /tmp/navi /usr/bin
+  when: navi.stat.exists
 
-    - name: add navi to bin
-      command: mv /tmp/navi /usr/bin
-      when: navi.stat.exists
+- name: Set delta Version
+  set_fact:
+    delta_version: "0.17.0"
 
-    - name: Set delta Version
-      set_fact:
-        delta_version: "0.17.0"
+- name: Download delta .deb file
+  get_url:
+    url: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
+    dest: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
 
-    - name: Download delta .deb file
-      get_url:
-        url: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
-        dest: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
+- name: Install specific delta Version
+  apt:
+    deb: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
+    state: present
 
-    - name: Install specific delta Version
-      apt:
-        deb: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
-        state: present
+- name: Check if fzf git exists
+  become: true
+  become_user: "{{ user }}"
+  stat:
+    path: ~/.fzf
+  register: fzf
+  vars:
+    user: armand
 
-    - name: Check if fzf git exists
-      become: true
-      become_user: "{{ user }}"
-      stat:
-        path: ~/.fzf
-      register: fzf
-      vars:
-        user: armand
+- name: git download latest fzf
+  become: true
+  become_user: "{{ user }}"
+  shell: |
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  when: fzf.stat.exists == false
+  args:
+    executable: /bin/bash
+  vars:
+    user: armand
 
-    - name: git download latest fzf
-      become: true
-      become_user: "{{ user }}"
-      shell: |
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-      when: fzf.stat.exists == false
-      args:
-        executable: /bin/bash
-      vars:
-        user: armand
+- name: Install fzf for armand
+  become: true
+  become_user: "{{ user }}"
+  command: printf 'yyy' | ~/.fzf/install
+  when: fzf.stat.exists
+  vars:
+    user: armand
 
-    - name: Install fzf for armand
-      become: true
-      become_user: "{{ user }}"
-      command: printf 'yyy' | ~/.fzf/install
-      when: fzf.stat.exists
-      vars:
-        user: armand
-
-    - name: reload config file for armand
-      become: true
-      become_user: "{{ user }}"
-      shell: source /home/{{ user }}/.bashrc
-      args:
-        executable: /bin/bash
-      vars:
-        user: armand
+- name: reload config file for armand
+  become: true
+  become_user: "{{ user }}"
+  shell: source /home/{{ user }}/.bashrc
+  args:
+    executable: /bin/bash
+  vars:
+    user: armand
