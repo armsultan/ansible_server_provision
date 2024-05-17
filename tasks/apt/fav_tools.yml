@@ -186,14 +186,14 @@
   become_user: "{{ user }}"
   stat:
     path: /home/{{ user }}/.fzf
-  register: fzf-prexisting
+  register: fzfprexisting
 
 - name: git download latest fzf
   become: true
   become_user: "{{ user }}"
   shell: |
     git clone --depth 1 https://github.com/junegunn/fzf.git /home/{{ user }}/.fzf
-  when: fzf-prexisting.stat.exists == false
+  when: fzfprexisting.stat.exists == false
   args:
     executable: /bin/bash
 
@@ -202,13 +202,13 @@
   become_user: "{{ user }}"
   stat:
     path: /home/{{ user }}/.fzf
-  register: fzf-downloaded
+  register: fzfdownloaded
 
 - name: Install fzf for armand
   become: true
   become_user: "{{ user }}"
   command: printf 'yyy' | /home/{{ user }}/.fzf/install
-  when: fzf-downloaded.stat.exists
+  when: fzfdownloaded.stat.exists
 
 #source bashrc
 - name: reload config file for {{ user }}

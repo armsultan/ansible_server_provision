@@ -54,12 +54,12 @@ ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git loc
 ### Ubuntu
 ```bash
 # Install ansible and git
-sudo apt-get -y install software-properties-common gnupg2 
-sudo apt-add-repository -y ppa:ansible/ansible
-sudo apt update
-sudo apt -y install ansible git
+sudo apt-get -y install software-properties-common gnupg2 \
+    && sudo apt-add-repository -y ppa:ansible/ansible \
+    && sudo apt update \
+    && sudo apt -y install ansible git \
 # Check Ansible version
-ansible --version
+    && ansible --version
 # manually run ansible-pull for the first time
 sudo ansible-pull -f -U https://github.com/armsultan/ansible_server_provision.git local_apt.yml
 ```
