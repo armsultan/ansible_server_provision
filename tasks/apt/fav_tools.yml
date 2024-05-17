@@ -194,21 +194,20 @@
   become: true
   become_user: "{{ user }}"
   shell: |
-    git clone --depth 1 https://github.com/junegunn/fzf.git /home/{{ user }}/.fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git /home/{{ user }}/.fzf && printf 'yyy' | /home/{{ user }}/.fzf/install
   when: fzf.stat.exists == false
   args:
     executable: /bin/bash
   # vars:
   #   user: armand
 
-- name: Install fzf for armand
-  become: true
-  become_user: "{{ user }}"
-  command: printf 'yyy' | /home/{{ user }}/.fzf/install
-  when: fzf.stat.exists
-  # vars:
-  #   user: armand
-
+# - name: Install fzf for armand
+#   become: true
+#   become_user: "{{ user }}"
+#   command: printf 'yyy' | /home/{{ user }}/.fzf/install
+#   when: fzf.stat.exists
+# vars:
+#   user: armand
 #source bashrc
 - name: reload config file for armand
   become: true
