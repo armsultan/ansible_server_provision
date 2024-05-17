@@ -186,42 +186,34 @@
   become_user: "{{ user }}"
   stat:
     path: /home/{{ user }}/.fzf
-  register: fzf
-  # vars:
-  #   user: armand
+  register: fzf-prexisting
 
 - name: git download latest fzf
   become: true
   become_user: "{{ user }}"
   shell: |
     git clone --depth 1 https://github.com/junegunn/fzf.git /home/{{ user }}/.fzf
-  when: fzf.stat.exists == false
+  when: fzf-prexisting.stat.exists == false
   args:
     executable: /bin/bash
-  # vars:
-  #   user: armand
 
-#fzf
 - name: Check if fzf git exists (again)
   become: true
   become_user: "{{ user }}"
   stat:
     path: /home/{{ user }}/.fzf
-  register: fzf
+  register: fzf-downloaded
 
 - name: Install fzf for armand
   become: true
   become_user: "{{ user }}"
   command: printf 'yyy' | /home/{{ user }}/.fzf/install
-  when: fzf.stat.exists
-# vars:
-#   user: armand
+  when: fzf-downloaded.stat.exists
+
 #source bashrc
-- name: reload config file for armand
+- name: reload config file for {{ user }}
   become: true
   become_user: "{{ user }}"
   shell: source /home/{{ user }}/.bashrc
   args:
     executable: /bin/bash
-  # vars:
-  #   user: armand
