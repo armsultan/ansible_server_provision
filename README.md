@@ -27,9 +27,7 @@ You need to have an account on https://developers.redhat.com before you can do t
 ```bash
 # Install ansible and git
 sudo dnf update -y
-sudo dnf install python3
-sudo subscription-manager register --auto-attach
-sudo subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
+sudo dnf install -y python3 ansible-core git
 sudo yum -y install ansible git
 # Check Ansible version
 ansible --version
