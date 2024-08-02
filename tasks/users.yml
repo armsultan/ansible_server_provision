@@ -10,16 +10,15 @@
   copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
-- name: Add ansible user as sudoer, using shell in Alpine
+- name: Ensure sudoers entry for ansible user
   lineinfile:
-    path: /etc/sudoers
     state: present
     regexp: "^%ansible"
     line: "%ansible ALL=(ALL) NOPASSWD: ALL"
     validate: "visudo -cf %s"
   when: ansible_distribution == 'Alpine'
 
-- name: Set authorized key for "ansible" taken from file
+- name: Set authorized key for 'ansible' taken from file
   authorized_key:
     user: ansible
     state: present
@@ -37,10 +36,15 @@
 - name: Add the user '{{ user }}' with a primary group of 'admin', using shell in Alpine
   shell: |
     addgroup {{ user }} admin
-  when: ansible_distribution == 'Alpine' or ansible_distribution == 'Alpine'
+  when: ansible_distribution == 'Alpine'
 
 - name: Add {{ user }} user as sudoer, copy sudoers_{{ user }} file
-  copy: src=files/sudoers_{{ user }} dest=/etc/sudoers.d/{{ user }} owner=root group=root mode=0440
+  copy:
+    src: files/sudoers_{{ user }}
+    dest: /etc/sudoers.d/{{ user }}
+    owner: root
+    group: root
+    mode: 0440
   when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
 - name: Set authorized key for '{{ user }}' taken from file
