@@ -18,12 +18,6 @@
     validate: "visudo -cf %s"
   when: ansible_distribution == 'Alpine'
 
-- name: Set authorized key for 'ansible' taken from file
-  authorized_key:
-    user: ansible
-    state: present
-    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
-
 - name: Add the user '{{ user }}', appending the group 'admin' user's groups
   user:
     name: "{{ user }}"
@@ -50,5 +44,11 @@
 - name: Set authorized key for '{{ user }}' taken from file
   authorized_key:
     user: "{{ user }}"
+    state: present
+    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+
+- name: Set authorized key for 'ansible' taken from file
+  authorized_key:
+    user: ansible
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
