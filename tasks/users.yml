@@ -10,13 +10,19 @@
   copy: src=files/sudoers_ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
   when: ansible_distribution == 'Alpine' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' or ansible_os_family == 'RedHat'
 
-- name: Ensure sudoers entry for ansible user
-  lineinfile:
+# - name: Ensure sudoers entry for ansible user
+#   lineinfile:
+#     state: present
+#     regexp: "ansible"
+#     line: "%ansible ALL=(ALL) NOPASSWD: ALL"
+#     validate: "visudo -cf %s"
+#   when: ansible_distribution == 'Alpine'
+
+- name: Set authorized key for 'ansible' taken from file
+  authorized_key:
+    user: ansible
     state: present
-    regexp: "^%ansible"
-    line: "%ansible ALL=(ALL) NOPASSWD: ALL"
-    validate: "visudo -cf %s"
-  when: ansible_distribution == 'Alpine'
+    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
 - name: Add the user '{{ user }}', appending the group 'admin' user's groups
   user:
@@ -47,8 +53,4 @@
     state: present
     key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
-- name: Set authorized key for 'ansible' taken from file
-  authorized_key:
-    user: ansible
-    state: present
-    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+
