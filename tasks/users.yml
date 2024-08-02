@@ -18,7 +18,7 @@
     line: "%ansible ALL=(ALL) NOPASSWD: ALL"
     validate: "visudo -cf %s"
   when: ansible_distribution == 'Alpine'
-
+  
 - name: Set authorized key for 'ansible' taken from file
   authorized_key:
     user: ansible
